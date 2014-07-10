@@ -57,10 +57,10 @@
           <h1>Overview</h1>
           <ul>
             <li>Experience</li>
+            <li>Discoverability</li>
             <li>Configurability</li>
             <li>Observability</li>
             <li>Resiliency</li>
-            <li>Consistency</li>
             <li>Further reading</li>
           </ul>
         </section>
@@ -107,9 +107,84 @@
             so I have even less power to fix things. But that's 
             what support tickets are for.</p>
 
-            <p>Or ranting </p>
+            <p>Or ranting&hellip; </p>
           </section>  
-          </section>    
+        </section>    
+
+        <section>
+          <h1>Adage</h1>
+          <fragments>
+          <blockquote>Comment your code for the poor sucker who
+            ends up reading it in six months time - it could be you.
+          </blockquote>
+          <blockquote>Design your software for the poor sucker who
+            gets called up at 3am. In a devops world it could be you.
+          </blockquote>
+          <blockquote>Always code as if the person who ends up 
+            getting called at 3am is a violent psychopath who 
+            knows where you live.
+          </blockquote>
+          </fragments>
+        </section>
+
+        <section>
+          <section>
+            <h1>Discoverability</h1>
+            <img src="images/standards.jpg">
+          </section>
+          <section>
+          <p>No support team should have to guess how software
+          is setup.</p>
+          <p>Have organisational standards that declare where</p>
+          <ul>
+            <li>How software is installed (chef, puppet, ansible, salt, cfengine, just pick one</li>
+            <li>Where logs live</li>
+            <li>Where configuration comes from, and what the current configuration is</li>
+            <li>How to stop, start, interrogate status of an app</li>
+          </ul>
+          </section>
+        </section>
+
+        <section>
+          <section>
+          <h1>Configurability</h1>
+          <fragments>
+            <ul>
+              <li>Terrible: configuration as part of the deployable</li>
+              <li>Good: separate configuration files read at startup</li>
+              <li>Better: configuration read from files after startup</li>
+              <li>Also good if well managed: configuration read from a service (e.g. etcd)</li>
+            </ul>
+          </fragments>
+          </section>
+
+          <section>
+            <h1>The configuration monolith</h1>
+            <ul>
+              <li>Bad: one giant configuration file containing everything from 
+                license keys and authentication tokens to configuration
+                updated by user interaction at runtime (hi Jenkins and Go!)</li>
+                <li>Better: Configuration files tied to a particular purpose, 
+                in an easily templated fashion (think linux conf.d structures)
+            </ul>
+          </section>
+          <section>
+            <p>Special shout out to this beauty buried deep in a file that
+            changes every version:
+            <pre><code>
+<!-- Uncomment this to enable this particularly useful configuration
+  <some>
+    <arbitrary>
+      <xml>Make stuff work here</xml>
+    </arbitrary>
+  </some>
+-->
+</pre></code>
+            <p>Particularly difficult to template or remove specific lines
+            in a way that works across releases</p>
+          </section>
+        </section>
+
 
         <section>
           <h1>Thanks!</h1>
