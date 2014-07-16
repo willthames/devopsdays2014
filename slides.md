@@ -113,8 +113,8 @@ in a way that works across releases
 * Exceptions should be exceptional. `AuthenticationException` when a 
   user mistypes their password is NOT exceptional &mdash; don't log a stack 
   trace for it &mdash; put it in an audit log if need be!
-* Know your log parsing tools - writing information as key=value pairs will 
-  save you from having to write custom parsers.
+* Know your log parsing tools &mdash; writing information as key=value 
+  pairs will save you from having to write custom parsers.
 * Transaction IDs are great for tying together multiple logs, especially if 
   you can get them in your access log too.
 
@@ -124,7 +124,7 @@ in a way that works across releases
 * Less out of the box, log: response time, user ID and *actual* IP address 
   &mdash; i.e. if it comes through a proxy or load balancer, log 
   `X-Forwarded-For` not apparent IP. 
-* Be careful of timeouts - not all long running requests make it to the 
+* Be careful of timeouts &mdash; not all long running requests make it to the 
   access logs.
 
 . . .

@@ -128,7 +128,7 @@
 <h1>Application logs</h1>
 <ul>
 <li>Exceptions should be exceptional. <code>AuthenticationException</code> when a user mistypes their password is NOT exceptional — don't log a stack trace for it — put it in an audit log if need be!</li>
-<li>Know your log parsing tools - writing information as key=value pairs will save you from having to write custom parsers.</li>
+<li>Know your log parsing tools — writing information as key=value pairs will save you from having to write custom parsers.</li>
 <li>Transaction IDs are great for tying together multiple logs, especially if you can get them in your access log too.</li>
 </ul>
 </section><section id="access-logs" class="slide level2">
@@ -136,7 +136,7 @@
 <ul>
 <li>Access logs should contain the obvious (URL, status code, timestamp etc)</li>
 <li>Less out of the box, log: response time, user ID and <em>actual</em> IP address — i.e. if it comes through a proxy or load balancer, log <code>X-Forwarded-For</code> not apparent IP.</li>
-<li>Be careful of timeouts - not all long running requests make it to the access logs.</li>
+<li>Be careful of timeouts — not all long running requests make it to the access logs.</li>
 </ul>
 <div class="fragment">
 <ul>
