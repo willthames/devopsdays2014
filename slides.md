@@ -168,4 +168,10 @@ software!
 
 [Netflix blog](http://techblog.netflix.com)
 
-# Thanks!
+# Conclusions
+
+## Questions
+
+## Thanks
+
+Slides are at [willthames.github.io/devopsdays2014](http://willthames.github.io/devopsdays2014)
