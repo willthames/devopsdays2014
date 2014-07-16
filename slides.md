@@ -170,8 +170,8 @@ software!
 
 # Conclusions
 
-## Questions
+## Questions?
 
-## Thanks
+## Thanks
 
-Slides are at [willthames.github.io/devopsdays2014](http://willthames.github.io/devopsdays2014)
+Slides are at [http://willthames.github.io/devopsdays2014](http://willthames.github.io/devopsdays2014)
