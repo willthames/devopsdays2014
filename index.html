@@ -1,203 +1,191 @@
-<!doctype html>
-<html lang="en">
-
-  <head>
-    <meta charset="utf-8">
-
-    <title>Designing and Developing Software for Operations</title>
-
-    <meta name="description" content="Designing and Developing Software for Operations">
-    <meta name="author" content="Will Thames">
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/moon.css" id="theme">
-
-    <!-- For syntax highlighting -->
-    <link rel="stylesheet" href="lib/css/zenburn.css">
-
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Will Thames" />
+  <meta name="dcterms.date" content="2014-07-25" />
+  <title>Designing and Developing Software for Operations</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="reveal.js/css/reveal.min.css"/>
+    <style type="text/css">code{white-space: pre;}</style>
+    <link rel="stylesheet" href="reveal.js/css/theme/simple.css" id="theme">
     <!-- If the query includes 'print-pdf', include the PDF print sheet -->
     <script>
       if( window.location.search.match( /print-pdf/gi ) ) {
         var link = document.createElement( 'link' );
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = 'css/print/pdf.css';
+        link.href = 'reveal.js/css/print/pdf.css';
         document.getElementsByTagName( 'head' )[0].appendChild( link );
       }
     </script>
-
     <!--[if lt IE 9]>
-    <script src="lib/js/html5shiv.js"></script>
+    <script src="reveal.js/lib/js/html5shiv.js"></script>
     <![endif]-->
-  </head>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
 
-  <body>
+<section>
+    <h1 class="title">Designing and Developing Software for Operations</h1>
+    <h2 class="author">Will Thames</h2>
+    <h3 class="date">25 July 2014</h3>
+</section>
 
-    <div class="reveal">
+<section><section id="introduction" class="titleslide slide level1"><h1>Introduction</h1></section><section id="overview" class="slide level2">
+<h1>Overview</h1>
+<ul>
+<li>Discoverability</li>
+<li>Configurability</li>
+<li>Observability</li>
+<li>Resiliency</li>
+<li>Further reading</li>
+</ul>
+</section><section id="setting-the-scene" class="slide level2">
+<h1>Setting the scene</h1>
+<ul>
+<li>2+ years at Suncorp (2012–)</li>
+<li>~8 years at Betfair (2003–2011)</li>
+</ul>
+</section><section id="a-little-about-betfair" class="slide level2">
+<h1>A little about Betfair</h1>
+<ul>
+<li class="fragment">I left in 2011. Much will have changed.</li>
+<li class="fragment">150+ applications</li>
+<li class="fragment">… not that many of which 'looked' the same</li>
+<li class="fragment">1000s of transactions per second, all of which were supposed to complete in less than a second</li>
+<li class="fragment">1000s of servers across multiple DCs</li>
+</ul>
+<div class="fragment">
+<p>Genuinely 24x7, highly transactional environment with low tolerance for downtime.</p>
+</div>
+</section><section id="a-terrible-weekend" class="slide level2">
+<h1>A terrible weekend</h1>
+<p>When Sam Newman tells you that microservices have to be carefully designed, he's very right</p>
+<p>A set of cascading failures across a suite of microservices contributed to doing 30+ hours of oncall in a single weekend.</p>
+<p>We came up with a list of 20+ improvements.</p>
+<p>This is a summary of some of those learnings!</p>
+</section><section id="and-suncorp" class="slide level2">
+<h1> And Suncorp</h1>
+<p>I support a lot of third-party written software so I have even less power to fix things. But that's what support tickets are for.</p>
+<div class="fragment">
+<p>Or ranting…</p>
+</div>
+</section></section>
+<section><section id="discoverability" class="titleslide slide level1"><h1>Discoverability</h1></section><section id="standards" class="slide level2">
+<h1>Standards</h1>
+<figure>
+<img src="images/standards.png" alt="http://xkcd.com/927/" /><figcaption>http://xkcd.com/927/</figcaption>
+</figure>
+</section><section id="standards-1" class="slide level2">
+<h1>Standards</h1>
+<p>No support team should have to guess how software is setup. Have organisational standards that declare:</p>
+<ul>
+<li class="fragment">How software is installed (chef, puppet, ansible, salt, cfengine — just pick one)</li>
+<li class="fragment">Where logs live</li>
+<li class="fragment">Where configuration comes from, and what the current configuration is</li>
+<li class="fragment">How to stop, start, interrogate status of an app</li>
+</ul>
+</section></section>
+<section><section id="configurability" class="titleslide slide level1"><h1>Configurability</h1></section><section id="configuration-management" class="slide level2">
+<h1>Configuration Management</h1>
+<ul>
+<li class="fragment">Terrible: configuration as part of the deployable</li>
+<li class="fragment">Good: separate configuration files read at startup</li>
+<li class="fragment">Better: configuration read from files after startup</li>
+<li class="fragment">Also good if well managed: configuration read from a service (e.g. etcd)</li>
+</ul>
+</section><section id="the-configuration-monolith" class="slide level2">
+<h1>The configuration monolith</h1>
+<ul>
+<li class="fragment">Bad: one giant configuration file containing everything from license keys and authentication tokens to configuration updated by user interaction at runtime (hi Jenkins and Go!)</li>
+<li class="fragment">Better: Configuration files tied to a particular purpose, in an easily templated fashion (think linux conf.d structures)</li>
+</ul>
+</section><section class="slide level2">
 
-      <!-- Any section element inside of this container is displayed as a slide -->
-      <div class="slides">
-        <section>
-          <h1>Designing and Developing</h1>
-          <h1>Software for Operations</h1>
-          <h4>Will Thames</h4>
-          <ul>
-            <li>will.thames@suncorp.com.au / will@thames.id.au</li>
-            <li><a href="http://twitter.com/willthames">@willthames</a></li>
-            <li><a href="http://willthames.github.io">http://willthames.github.io</a></li>
-          </ul>
-        </section>
-
-        <section>
-          <h1>Overview</h1>
-          <ul>
-            <li>Experience</li>
-            <li>Discoverability</li>
-            <li>Configurability</li>
-            <li>Observability</li>
-            <li>Resiliency</li>
-            <li>Further reading</li>
-          </ul>
-        </section>
-
-        <!-- Experience -->
-        <section>
-
-          <section>
-            <h1>Setting the scene</h1>
-            <ul>
-              <li>2+ years at Suncorp</li>
-              <li>8+ years at Betfair</li>
-            </ul>
-          </section>
-
-          <section>
-            <h1>A little about Betfair</h1>
-            <ul>
-              <li>I left in 2011. Much will have changed.</li>
-              <li>150+ applications</li>
-              <li>... not that many of which 'looked' the same</li>
-              <li>1000s of transactions per second, all of which
-                were supposed to complete in less than a second</li>
-              <li>1000s of servers across multiple DCs</li>
-            </ul>
-          </section>
-
-          <section>
-            <h1>A terrible weekend</h1>
-
-            <p>When Sam Newman tells you that microservices have
-            to be carefully designed, he's very right</p>
-
-            <p>A set of cascading failures across a suite of 
-            microservices contributed to doing 30+ hours of oncall
-            in a single weekend.</p>
-
-            <p>We came up with a list of 20+ improvements.</p>
-          </section>
-
-          <section>
-            <h1>And Suncorp</h1>
-            <p>I support a lot of third-party written software
-            so I have even less power to fix things. But that's 
-            what support tickets are for.</p>
-
-            <p>Or ranting&hellip; </p>
-          </section>  
-        </section>    
-
-        <section>
-          <h1>Adage</h1>
-          <fragments>
-          <blockquote>Comment your code for the poor sucker who
-            ends up reading it in six months time - it could be you.
-          </blockquote>
-          <blockquote>Design your software for the poor sucker who
-            gets called up at 3am. In a devops world it could be you.
-          </blockquote>
-          <blockquote>Always code as if the person who ends up 
-            getting called at 3am is a violent psychopath who 
-            knows where you live.
-          </blockquote>
-          </fragments>
-        </section>
-
-        <section>
-          <section>
-            <h1>Discoverability</h1>
-            <img src="images/standards.jpg">
-          </section>
-          <section>
-          <p>No support team should have to guess how software
-          is setup.</p>
-          <p>Have organisational standards that declare where</p>
-          <ul>
-            <li>How software is installed (chef, puppet, ansible, salt, cfengine, just pick one</li>
-            <li>Where logs live</li>
-            <li>Where configuration comes from, and what the current configuration is</li>
-            <li>How to stop, start, interrogate status of an app</li>
-          </ul>
-          </section>
-        </section>
-
-        <section>
-          <section>
-          <h1>Configurability</h1>
-          <fragments>
-            <ul>
-              <li>Terrible: configuration as part of the deployable</li>
-              <li>Good: separate configuration files read at startup</li>
-              <li>Better: configuration read from files after startup</li>
-              <li>Also good if well managed: configuration read from a service (e.g. etcd)</li>
-            </ul>
-          </fragments>
-          </section>
-
-          <section>
-            <h1>The configuration monolith</h1>
-            <ul>
-              <li>Bad: one giant configuration file containing everything from 
-                license keys and authentication tokens to configuration
-                updated by user interaction at runtime (hi Jenkins and Go!)</li>
-                <li>Better: Configuration files tied to a particular purpose, 
-                in an easily templated fashion (think linux conf.d structures)
-            </ul>
-          </section>
-          <section>
-            <p>Special shout out to this beauty buried deep in a file that
-            changes every version:
-            <pre><code>
-<!-- Uncomment this to enable this particularly useful configuration
-  <some>
-    <arbitrary>
-      <xml>Make stuff work here</xml>
-    </arbitrary>
-  </some>
--->
-</pre></code>
-            <p>Particularly difficult to template or remove specific lines
-            in a way that works across releases</p>
-          </section>
-        </section>
-
-
-        <section>
-          <h1>Thanks!</h1>
-          <h3>Questions?</h3>
-        </section>
-      </div>
-
+<p>Special mention for this beauty buried deep in a file that changes every version:</p>
+<pre><code>&lt;!-- Uncomment this to enable this particularly useful configuration
+  &lt;some&gt;
+    &lt;arbitrary&gt;
+      &lt;xml&gt;Make stuff work here&lt;/xml&gt;
+    &lt;/arbitrary&gt;
+  &lt;/some&gt; 
+--&gt;</code></pre>
+<p>Particularly difficult to template or remove specific lines in a way that works across releases</p>
+</section></section>
+<section><section id="observability" class="titleslide slide level1"><h1>Observability</h1></section><section id="logging" class="slide level2">
+<h1>Logging</h1>
+<ul>
+<li>Configure log rotation on a schedule</li>
+<li>Log in an unchanging timezone (UTC, or Australia/Brisbane rather than Australia/Sydney)</li>
+<li>Logs should have a single specific purpose</li>
+</ul>
+</section><section id="application-logs" class="slide level2">
+<h1>Application logs</h1>
+<ul>
+<li>Exceptions should be exceptional. <code>AuthenticationException</code> when a user mistypes their password is NOT exceptional — don't log a stack trace for it — put it in an audit log if need be!</li>
+<li>Know your log parsing tools - writing information as key=value pairs will save you from having to write custom parsers.</li>
+<li>Transaction IDs are great for tying together multiple logs, especially if you can get them in your access log too.</li>
+</ul>
+</section><section id="access-logs" class="slide level2">
+<h1>Access logs</h1>
+<ul>
+<li>Access logs should contain the obvious (URL, status code, timestamp etc)</li>
+<li>Less out of the box, log: response time, user ID and <em>actual</em> IP address — i.e. if it comes through a proxy or load balancer, log <code>X-Forwarded-For</code> not apparent IP.</li>
+<li>Be careful of timeouts - not all long running requests make it to the access logs.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>If you can't use a widely-used access log format, make your access log format standard across your organisation.</li>
+</ul>
+</div>
+</section><section id="health-status-pages" class="slide level2">
+<h1>Health status pages</h1>
+<ul>
+<li>Health status pages can be used by loadbalancers and humans</li>
+<li>Make your loadbalancer checks be as complete as possible (test connections to critical integration points)</li>
+<li>Make your loadbalancer health checks be as quick as possible</li>
+<li>Have a separate more verbose healthcheck page if need be containing status of DB connections, queue lengths, request counts etc.</li>
+<li>Allow the healthcheck to recalculate regularly(!!)</li>
+</ul>
+</section></section>
+<section><section id="resiliency" class="titleslide slide level1"><h1>Resiliency</h1></section></section>
+<section><section id="further-reading" class="titleslide slide level1"><h1>Further Reading</h1></section><section id="release-it" class="slide level2">
+<h1>Release It</h1>
+<p>In the last few weeks I've said I could write a book on this. Michael Nygaard actually has</p>
+<figure>
+<img src="images/release-it.jpg" />
+</figure>
+</section><section id="continuous-delivery" class="slide level2">
+<h1>Continuous Delivery</h1>
+<p>Jez Humble and Dave Farley regularly makes the point that configuration management is one of the foundations of Continuous Delivery and have some great advice:</p>
+<figure>
+<img src="images/continuous-delivery.jpg" />
+</figure>
+</section><section id="netflix" class="slide level2">
+<h1>Netflix</h1>
+<p>Netflix are the poster child for designing and delivering operable software, telling the rest of us how they do it and sharing their software!</p>
+<p><a href="http://netflix.github.io/">Netflix open source software</a></p>
+<p><a href="http://techblog.netflix.com">Netflix blog</a></p>
+</section></section>
+<section><section id="conclusions" class="titleslide slide level1"><h1>Conclusions</h1></section><section id="questions" class="slide level2">
+<h1>Questions?</h1>
+</section><section id="thanks" class="slide level2">
+<h1> Thanks</h1>
+<p>Slides are at <a href="http://willthames.github.io/devopsdays2014">http://willthames.github.io/devopsdays2014</a></p>
+</section></section>
     </div>
+  </div>
 
-    <script src="lib/js/head.min.js"></script>
-    <script src="js/reveal.min.js"></script>
 
-    <script>
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.min.js"></script>
+
+  <script>
 
       // Full list of configuration options available here:
       // https://github.com/hakimel/reveal.js#configuration
@@ -206,26 +194,17 @@
         progress: true,
         history: true,
         center: true,
-
         theme: 'moon', // available themes are in /css/theme
-        transition: 'linear', // default/cube/page/concave/zoom/linear/fade/none
-
-        // Parallax scrolling
-        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
-        // parallaxBackgroundSize: '2100px 900px',
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
 
         // Optional libraries used to extend on reveal.js
         dependencies: [
-          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-          { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
-        ]
-      });
-
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+//          { src: 'reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; }, }
+//          { src: 'reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+]});
     </script>
-
-  </body>
+    </body>
 </html>
