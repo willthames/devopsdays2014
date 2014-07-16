@@ -59,6 +59,16 @@ Or ranting&hellip;
 
 ![http://xkcd.com/927/](images/standards.png)
 
+## Adages
+
+> * Comment your code for the poor sucker who
+    ends up reading it in six months time - it could be you.
+> * Design your software for the poor sucker who
+    gets called up at 3am. In a devops world it could be you.
+> * Always code as if the person who ends up 
+    getting called at 3am is a violent psychopath who 
+    knows where you live.
+
 ## Standards
 
 No support team should have to guess how software is setup.
@@ -143,6 +153,17 @@ in a way that works across releases
 * Allow the healthcheck to recalculate regularly(!!)
 
 # Resiliency
+
+## Fail safely
+* Fail gracefully where possible. Know your failure scenarios!
+* Fail fast - don't hold open threads for long periods
+
+## Recovery
+* When a healthcheck fails due to a dependency failure, ensure 
+  that that dependency recovering means that the healthcheck to recover
+* Ensure a service can start even in the absence of any dependencies.
+  It might not be healthy (and indeed the load balancer should consider
+  it unhealthy. But it should recover when the dependency recovers.
 
 # Further Reading
 
