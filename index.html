@@ -12,19 +12,10 @@
   <link rel="stylesheet" href="reveal.js/css/reveal.min.css"/>
     <style type="text/css">code{white-space: pre;}</style>
     <link rel="stylesheet" href="reveal.js/css/theme/simple.css" id="theme">
-    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
-    <script>
-      if( window.location.search.match( /print-pdf/gi ) ) {
-        var link = document.createElement( 'link' );
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        link.href = 'reveal.js/css/print/pdf.css';
-        document.getElementsByTagName( 'head' )[0].appendChild( link );
-      }
-    </script>
-    <!--[if lt IE 9]>
-    <script src="reveal.js/lib/js/html5shiv.js"></script>
-    <![endif]-->
+  <link rel="stylesheet" media="print" href="reveal.js/css/print/pdf.css" />
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
 </head>
 <body>
   <div class="reveal">
@@ -56,7 +47,7 @@
 <ul>
 <li class="fragment">I left in 2011. Much will have changed.</li>
 <li class="fragment">150+ applications</li>
-<li class="fragment">… not that many of which 'looked' the same</li>
+<li class="fragment">… not that many of which ‘looked’ the same</li>
 <li class="fragment">1000s of transactions per second, all of which were supposed to complete in less than a second</li>
 <li class="fragment">1000s of servers across multiple DCs</li>
 </ul>
@@ -65,15 +56,18 @@
 </div>
 </section><section id="a-terrible-weekend" class="slide level2">
 <h1>A terrible weekend</h1>
-<p>When Sam Newman tells you that microservices have to be carefully designed, he's very right</p>
+<p>When Sam Newman tells you that microservices have to be carefully designed, he’s very right</p>
 <p>A set of cascading failures across a suite of microservices contributed to doing 30+ hours of oncall in a single weekend.</p>
-<p>We came up with a list of 20+ improvements.</p>
-<p>This is a summary of some of those learnings!</p>
+<p>We came up with a list of 20+ improvements many of which needed to be applied to each failing service.</p>
+<p>This is a distillation of learnings from that time!</p>
 </section><section id="and-suncorp" class="slide level2">
-<h1> And Suncorp</h1>
-<p>I support a lot of third-party written software so I have even less power to fix things. But that's what support tickets are for.</p>
+<h1>And Suncorp</h1>
+<p>The applications I support are typically provided by third parties, and so making them more supportable is hard. But that’s what support tickets are for.</p>
 <div class="fragment">
-<p>Or ranting…</p>
+<p>Or public education†…</p>
+</div>
+<div class="fragment">
+<p>† I won’t name and shame too badly!</p>
 </div>
 </section></section>
 <section><section id="discoverability" class="titleslide slide level1"><h1>Discoverability</h1></section><section id="standards" class="slide level2">
@@ -81,6 +75,13 @@
 <figure>
 <img src="images/standards.png" alt="http://xkcd.com/927/" /><figcaption>http://xkcd.com/927/</figcaption>
 </figure>
+</section><section id="adages" class="slide level2">
+<h1>Adages</h1>
+<ul>
+<li class="fragment">Comment your code for the poor sucker who ends up reading it in six months time - it could be you.</li>
+<li class="fragment">Design your software for the poor sucker who gets called up at 3am. In a devops world it could be you.</li>
+<li class="fragment">Always code as if the person who ends up getting called at 3am is a violent psychopath who knows where you live.</li>
+</ul>
 </section><section id="standards-1" class="slide level2">
 <h1>Standards</h1>
 <p>No support team should have to guess how software is setup. Have organisational standards that declare:</p>
@@ -96,13 +97,13 @@
 <ul>
 <li class="fragment">Terrible: configuration as part of the deployable</li>
 <li class="fragment">Good: separate configuration files read at startup</li>
-<li class="fragment">Better: configuration read from files after startup</li>
-<li class="fragment">Also good if well managed: configuration read from a service (e.g. etcd)</li>
+<li class="fragment">Best if well managed (change auditing etc): runtime configuration read from a service (e.g. etcd, zookeeper) or DB</li>
 </ul>
 </section><section id="the-configuration-monolith" class="slide level2">
 <h1>The configuration monolith</h1>
 <ul>
-<li class="fragment">Bad: one giant configuration file containing everything from license keys and authentication tokens to configuration updated by user interaction at runtime (hi Jenkins and Go!)</li>
+<li class="fragment">Bad: one giant configuration file containing everything from license keys and authentication tokens to configuration.</li>
+<li class="fragment">Worse: these configuration files updated by user interaction at runtime.</li>
 <li class="fragment">Better: Configuration files tied to a particular purpose, in an easily templated fashion (think linux conf.d structures)</li>
 </ul>
 </section><section class="slide level2">
@@ -113,7 +114,7 @@
     &lt;arbitrary&gt;
       &lt;xml&gt;Make stuff work here&lt;/xml&gt;
     &lt;/arbitrary&gt;
-  &lt;/some&gt; 
+  &lt;/some&gt;
 --&gt;</code></pre>
 <p>Particularly difficult to template or remove specific lines in a way that works across releases</p>
 </section></section>
@@ -127,7 +128,7 @@
 </section><section id="application-logs" class="slide level2">
 <h1>Application logs</h1>
 <ul>
-<li>Exceptions should be exceptional. <code>AuthenticationException</code> when a user mistypes their password is NOT exceptional — don't log a stack trace for it — put it in an audit log if need be!</li>
+<li>Exceptions should be exceptional. <code>AuthenticationException</code> when a user mistypes their password is NOT exceptional — don’t log a stack trace for it — put it in an audit log if need be!</li>
 <li>Know your log parsing tools — writing information as key=value pairs will save you from having to write custom parsers.</li>
 <li>Transaction IDs are great for tying together multiple logs, especially if you can get them in your access log too.</li>
 </ul>
@@ -140,7 +141,7 @@
 </ul>
 <div class="fragment">
 <ul>
-<li>If you can't use a widely-used access log format, make your access log format standard across your organisation.</li>
+<li>If you can’t use a widely-used access log format, make your access log format standard across your organisation.</li>
 </ul>
 </div>
 </section><section id="health-status-pages" class="slide level2">
@@ -153,10 +154,22 @@
 <li>Allow the healthcheck to recalculate regularly(!!)</li>
 </ul>
 </section></section>
-<section><section id="resiliency" class="titleslide slide level1"><h1>Resiliency</h1></section></section>
+<section><section id="resiliency" class="titleslide slide level1"><h1>Resiliency</h1></section><section id="fail-safely" class="slide level2">
+<h1>Fail safely</h1>
+<ul>
+<li>Fail gracefully where possible. Know your failure scenarios!</li>
+<li>Fail fast - don’t hold open threads for long periods</li>
+</ul>
+</section><section id="recovery" class="slide level2">
+<h1>Recovery</h1>
+<ul>
+<li>When a healthcheck fails due to a dependency failure, ensure that that dependency recovering means that the healthcheck to recover</li>
+<li>Ensure a service can start even in the absence of any dependencies. It might not be healthy (and indeed the load balancer should consider it unhealthy. But it should recover when the dependency recovers.</li>
+</ul>
+</section></section>
 <section><section id="further-reading" class="titleslide slide level1"><h1>Further Reading</h1></section><section id="release-it" class="slide level2">
 <h1>Release It</h1>
-<p>In the last few weeks I've said I could write a book on this. Michael Nygaard actually has</p>
+<p>In the last few weeks I’ve said I could write a book on this. Michael Nygaard actually has</p>
 <figure>
 <img src="images/release-it.jpg" />
 </figure>
@@ -166,21 +179,15 @@
 <figure>
 <img src="images/continuous-delivery.jpg" />
 </figure>
-</section><section id="netflix" class="slide level2">
-<h1>Netflix</h1>
-<p>Netflix are the poster child for designing and delivering operable software, telling the rest of us how they do it and sharing their software!</p>
-<p><a href="http://netflix.github.io/">Netflix open source software</a></p>
-<p><a href="http://techblog.netflix.com">Netflix blog</a></p>
 </section></section>
 <section><section id="conclusions" class="titleslide slide level1"><h1>Conclusions</h1></section><section id="questions" class="slide level2">
 <h1>Questions?</h1>
 </section><section id="thanks" class="slide level2">
-<h1> Thanks</h1>
+<h1>Thanks</h1>
 <p>Slides are at <a href="http://willthames.github.io/devopsdays2014">http://willthames.github.io/devopsdays2014</a></p>
 </section></section>
     </div>
   </div>
-
 
   <script src="reveal.js/lib/js/head.min.js"></script>
   <script src="reveal.js/js/reveal.min.js"></script>
@@ -206,5 +213,5 @@
 //          { src: 'reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
 ]});
     </script>
-    </body>
+  </body>
 </html>

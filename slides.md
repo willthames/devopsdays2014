@@ -89,13 +89,13 @@ Have organisational standards that declare:
 ## Configuration Management
 > * Terrible: configuration as part of the deployable
 > * Good: separate configuration files read at startup
-> * Better: configuration read from files after startup
-> * Also good if well managed: configuration read from a service (e.g. etcd, zookeeper)
+> * Best if well managed (change auditing etc): runtime configuration
+    read from a service (e.g. etcd, zookeeper) or DB
 
 ## The configuration monolith
 > * Bad: one giant configuration file containing everything from
-    license keys and authentication tokens to configuration
-    updated by user interaction at runtime.
+    license keys and authentication tokens to configuration.
+> * Worse: these configuration files updated by user interaction at runtime.
 > * Better: Configuration files tied to a particular purpose,
     in an easily templated fashion (think linux conf.d structures)
 
