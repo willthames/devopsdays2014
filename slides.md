@@ -52,11 +52,11 @@ But that&rsquo;s what support tickets are for.
 
 . . .
 
-Or public education&dagger;&hellip;
+Or public education<sup>&dagger;</sup>&hellip;
 
 . . .
 
-&dagger; I won&rsquo;t name and shame too badly!
+<sup>&dagger;</sup> I won&rsquo;t name and shame too badly!
 
 # Discoverability
 
@@ -67,7 +67,7 @@ Or public education&dagger;&hellip;
 ## Adages
 
 > * Comment your code for the poor sucker who
-    ends up reading it in six months time - it could be you.
+    ends up reading it in six months time &mdash; it could be you.
 > * Design your software for the poor sucker who
     gets called up at 3am. In a devops world it could be you.
 > * Always code as if the person who ends up
@@ -161,7 +161,7 @@ in a way that works across releases
 
 ## Fail safely
 * Fail gracefully where possible. Know your failure scenarios!
-* Fail fast - don&rsquo;t hold open threads for long periods
+* Fail fast &mdash; don&rsquo;t hold open threads for long periods
 
 ## Recovery
 * When a healthcheck fails due to a dependency failure, ensure
