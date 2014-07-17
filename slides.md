@@ -52,11 +52,7 @@ But that&rsquo;s what support tickets are for.
 
 . . .
 
-Or public education<sup>&dagger;</sup>&hellip;
-
-. . .
-
-<sup>&dagger;</sup> I won&rsquo;t name and shame too badly!
+Or public education&hellip;
 
 # Discoverability
 
@@ -66,13 +62,12 @@ Or public education<sup>&dagger;</sup>&hellip;
 
 ## Adages
 
-> * Comment your code for the poor sucker who
+> * Comment your code for the poor unfortunate  who
     ends up reading it in six months time &mdash; it could be you.
-> * Design your software for the poor sucker who
+> * Design your software for the poor unfortunate who
     gets called up at 3am. In a devops world it could be you.
 > * Always code as if the person who ends up
-    getting called at 3am is a violent psychopath who
-    knows where you live.
+    getting called at 3am knows where you live.
 
 ## Standards
 
