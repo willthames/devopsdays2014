@@ -1,5 +1,5 @@
 % Designing and Developing Software for Operations
-% Will Thames
+% Will Thames (@willthames)
 % 25 July 2014
 
 # Introduction
@@ -18,13 +18,12 @@
 > * Mean Time to Recovery (MTTR) &mdash; more of this
 > * With some emphasis on software delivery
 
-. . .
+<div class="notes">
 
 * <s>Distributed Systems Architecture</s>
 * Design and Development 
 * <s>Operations</s>
 
-<div class="notes">
 Getting individual applications right within a complex 
 distributed system so that applications are operable
 </div>
@@ -78,9 +77,9 @@ Or public education&hellip;
 
 ## Adages
 
-> * Comment your code for the poor unfortunate  who
+> * Comment your code for the poor unfortunate person who
     ends up reading it in six months time &mdash; it could be you.
-> * Design your software for the poor unfortunate who
+> * Design your software for the poor unfortunate person who
     gets called up at 3am. In a devops world it could be you.
 
 ## Standards
@@ -184,9 +183,7 @@ in a way that works across releases
 # Further Reading
 
 ## Release It
-In the last few weeks I&rsquo;ve said I could write a book on this. Michael
-Nygaard actually has
-
+Michael Nygaard wrote the book on making software operable.
 ![](images/release-it.jpg)
 
 ## Continuous Delivery
@@ -197,14 +194,11 @@ Continuous Delivery and have some great advice:
 ![](images/continuous-delivery.jpg)
 
 ## Practical Microservices
-Avoid the common pitfalls of microservices!
 
-[Doing microservices right](http://www.slideshare.net/spnewman/practical-microservices-yow-2013)
+&ldquo;Doing microservices right&rdquo; talks about how to avoid some of 
+the common pitfalls of microservices
+[http://www.slideshare.net/spnewman/practical-microservices-yow-2013](http://www.slideshare.net/spnewman/practical-microservices-yow-2013) 
 
-# Conclusions
+# Questions?
 
-## Questions?
-
-## Thanks
-
-Slides are at [http://willthames.github.io/devopsdays2014](http://willthames.github.io/devopsdays2014)
+# Slides are at [http://willthames.github.io/devopsdays2014](http://willthames.github.io/devopsdays2014)
