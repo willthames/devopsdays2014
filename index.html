@@ -12,10 +12,19 @@
   <link rel="stylesheet" href="reveal.js/css/reveal.min.css"/>
     <style type="text/css">code{white-space: pre;}</style>
     <link rel="stylesheet" href="reveal.js/css/theme/simple.css" id="theme">
-  <link rel="stylesheet" media="print" href="reveal.js/css/print/pdf.css" />
-  <!--[if lt IE 9]>
-  <script src="reveal.js/lib/js/html5shiv.js"></script>
-  <![endif]-->
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+    <!--[if lt IE 9]>
+    <script src="reveal.js/lib/js/html5shiv.js"></script>
+    <![endif]-->
 </head>
 <body>
   <div class="reveal">
@@ -36,29 +45,44 @@
 <li>Resiliency</li>
 <li>Further reading</li>
 </ul>
+</section><section id="scope" class="slide level2">
+<h1>Scope</h1>
+<ul>
+<li class="fragment">Mean Time between Failures (MTBF) — not so much of this</li>
+<li class="fragment">Mean Time to Recovery (MTTR) — more of this</li>
+<li class="fragment">With some emphasis on software delivery</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><s>Distributed Systems Architecture</s></li>
+<li>Design and Development</li>
+<li><s>Operations</s></li>
+</ul>
+<aside class="notes">
+Getting individual applications right within a complex distributed system so that applications are operable
+</aside>
+</div>
 </section><section id="setting-the-scene" class="slide level2">
 <h1>Setting the scene</h1>
 <ul>
 <li>2+ years at Suncorp (2012–)</li>
 <li>~8 years at Betfair (2003–2011)</li>
 </ul>
-</section><section id="a-little-about-betfair" class="slide level2">
-<h1>A little about Betfair</h1>
+<aside class="notes">
+<h2>A little about Betfair</h2>
 <ul>
-<li class="fragment">I left in 2011. Much will have changed.</li>
-<li class="fragment">150+ applications</li>
-<li class="fragment">… not that many of which ‘looked’ the same</li>
-<li class="fragment">1000s of transactions per second, all of which were supposed to complete in less than a second</li>
-<li class="fragment">1000s of servers across multiple DCs</li>
+<li>I left in 2011. Much will have changed.</li>
+<li>150+ applications, not that many of which ‘looked’ the same</li>
+<li>1000s of transactions per second, all of which were supposed to complete in less than a second</li>
+<li>1000s of servers across multiple DCs</li>
 </ul>
-<div class="fragment">
-<p>Genuinely 24x7, highly transactional environment with low tolerance for downtime.</p>
-</div>
+Genuinely 24x7, highly transactional environment with low tolerance for downtime.
+</aside>
 </section><section id="a-terrible-weekend" class="slide level2">
 <h1>A terrible weekend</h1>
-<p>When Sam Newman tells you that microservices have to be carefully designed, he’s very right</p>
+<p>Microservices have to be carefully considered.</p>
 <p>A set of cascading failures across a suite of microservices contributed to doing 30+ hours of oncall in a single weekend.</p>
-<p>We came up with a list of 20+ improvements many of which needed to be applied to each failing service.</p>
+<p>We came up with a checklist of operational requirements, dozens of which were failing on each service.</p>
 <p>This is a distillation of learnings from that time!</p>
 </section><section id="and-suncorp" class="slide level2">
 <h1>And Suncorp</h1>
@@ -77,7 +101,6 @@
 <ul>
 <li class="fragment">Comment your code for the poor unfortunate who ends up reading it in six months time — it could be you.</li>
 <li class="fragment">Design your software for the poor unfortunate who gets called up at 3am. In a devops world it could be you.</li>
-<li class="fragment">Always code as if the person who ends up getting called at 3am knows where you live.</li>
 </ul>
 </section><section id="standards-1" class="slide level2">
 <h1>Standards</h1>
@@ -133,7 +156,7 @@
 <h1>Access logs</h1>
 <ul>
 <li>Access logs should contain the obvious (URL, status code, timestamp etc)</li>
-<li>Less out of the box, log: response time, user ID and <em>actual</em> IP address — i.e. if it comes through a proxy or load balancer, log <code>X-Forwarded-For</code> not apparent IP.</li>
+<li>Less out of the box, log: response time, user ID and <em>actual</em> IP address — i.e. if it comes through a proxy or load balancer, log <code>X-Forwarded-For</code> or similar, not the intermediary IP.</li>
 <li>Be careful of timeouts — not all long running requests make it to the access logs.</li>
 </ul>
 <div class="fragment">
@@ -155,13 +178,13 @@
 <h1>Fail safely</h1>
 <ul>
 <li>Fail gracefully where possible. Know your failure scenarios!</li>
-<li>Fail fast — don’t hold open threads for long periods</li>
+<li>Fail fast — don’t block threads or other scarce resources for long periods</li>
 </ul>
 </section><section id="recovery" class="slide level2">
 <h1>Recovery</h1>
 <ul>
 <li>When a healthcheck fails due to a dependency failure, ensure that that dependency recovering means that the healthcheck to recover</li>
-<li>Ensure a service can start even in the absence of any dependencies. It might not be healthy (and indeed the load balancer should consider it unhealthy. But it should recover when the dependency recovers.</li>
+<li>Ensure a service can start even in the absence of any dependencies. It might not be healthy (and if not should fail its healthchecks) But it should recover when the dependency recovers.</li>
 </ul>
 </section></section>
 <section><section id="further-reading" class="titleslide slide level1"><h1>Further Reading</h1></section><section id="release-it" class="slide level2">
@@ -176,6 +199,10 @@
 <figure>
 <img src="images/continuous-delivery.jpg" />
 </figure>
+</section><section id="practical-microservices" class="slide level2">
+<h1>Practical Microservices</h1>
+<p>Avoid the common pitfalls of microservices!</p>
+<p><a href="http://www.slideshare.net/spnewman/practical-microservices-yow-2013">Doing microservices right</a></p>
 </section></section>
 <section><section id="conclusions" class="titleslide slide level1"><h1>Conclusions</h1></section><section id="questions" class="slide level2">
 <h1>Questions?</h1>
@@ -185,6 +212,7 @@
 </section></section>
     </div>
   </div>
+
 
   <script src="reveal.js/lib/js/head.min.js"></script>
   <script src="reveal.js/js/reveal.min.js"></script>
@@ -210,5 +238,5 @@
 //          { src: 'reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
 ]});
     </script>
-  </body>
+    </body>
 </html>

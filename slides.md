@@ -12,36 +12,52 @@
 * Resiliency
 * Further reading
 
+## Scope
+
+> * Mean Time between Failures (MTBF) &mdash; not so much of this
+> * Mean Time to Recovery (MTTR) &mdash; more of this
+> * With some emphasis on software delivery
+
+. . .
+
+* <s>Distributed Systems Architecture</s>
+* Design and Development 
+* <s>Operations</s>
+
+<div class="notes">
+Getting individual applications right within a complex 
+distributed system so that applications are operable
+</div>
+
 ## Setting the scene
 
 * 2+ years at Suncorp (2012&ndash;)
 * ~8 years at Betfair (2003&ndash;2011)
 
+<div class="notes">
 ## A little about Betfair
 
-> * I left in 2011. Much will have changed.
-> * 150+ applications
-> * &hellip; not that many of which &lsquo;looked&rsquo; the same
-> * 1000s of transactions per second, all of which
-    were supposed to complete in less than a second
-> * 1000s of servers across multiple DCs
-
-. . .
+* I left in 2011. Much will have changed.
+* 150+ applications, not that many of which &lsquo;looked&rsquo; the same
+* 1000s of transactions per second, all of which
+  were supposed to complete in less than a second
+* 1000s of servers across multiple DCs
 
 Genuinely 24x7, highly transactional environment
 with low tolerance for downtime.
+</div>
 
 ## A terrible weekend
 
-When Sam Newman tells you that microservices have
-to be carefully designed, he&rsquo;s very right
+Microservices have to be carefully considered.
 
 A set of cascading failures across a suite of
 microservices contributed to doing 30+ hours of oncall
 in a single weekend.
 
-We came up with a list of 20+ improvements many of which
-needed to be applied to each failing service.
+We came up with a checklist of operational 
+requirements, dozens of which were failing on each 
+service.
 
 This is a distillation of learnings from that time!
 
@@ -66,8 +82,6 @@ Or public education&hellip;
     ends up reading it in six months time &mdash; it could be you.
 > * Design your software for the poor unfortunate who
     gets called up at 3am. In a devops world it could be you.
-> * Always code as if the person who ends up
-    getting called at 3am knows where you live.
 
 ## Standards
 
@@ -121,8 +135,9 @@ in a way that works across releases
 ## Application logs
 
 * Exceptions should be exceptional. `AuthenticationException` when a
-  user mistypes their password is NOT exceptional &mdash; don&rsquo;t log a stack
-  trace for it &mdash; put it in an audit log if need be!
+  user mistypes their password is NOT exceptional &mdash; 
+  don&rsquo;t log a stack trace for it &mdash; put it in an audit log 
+  if need be!
 * Know your log parsing tools &mdash; writing information as key=value
   pairs will save you from having to write custom parsers.
 * Transaction IDs are great for tying together multiple logs, especially if
@@ -133,7 +148,7 @@ in a way that works across releases
 * Access logs should contain the obvious (URL, status code, timestamp etc)
 * Less out of the box, log: response time, user ID and *actual* IP address
   &mdash; i.e. if it comes through a proxy or load balancer, log
-  `X-Forwarded-For` not apparent IP.
+  `X-Forwarded-For` or similar, not the intermediary IP.
 * Be careful of timeouts &mdash; not all long running requests make it to the
   access logs.
 
@@ -156,14 +171,15 @@ in a way that works across releases
 
 ## Fail safely
 * Fail gracefully where possible. Know your failure scenarios!
-* Fail fast &mdash; don&rsquo;t hold open threads for long periods
+* Fail fast &mdash; don&rsquo;t block threads or other scarce 
+  resources for long periods
 
 ## Recovery
 * When a healthcheck fails due to a dependency failure, ensure
   that that dependency recovering means that the healthcheck to recover
 * Ensure a service can start even in the absence of any dependencies.
-  It might not be healthy (and indeed the load balancer should consider
-  it unhealthy. But it should recover when the dependency recovers.
+  It might not be healthy (and if not should fail its healthchecks)
+  But it should recover when the dependency recovers.
 
 # Further Reading
 
@@ -179,6 +195,11 @@ configuration management is one of the foundations of
 Continuous Delivery and have some great advice:
 
 ![](images/continuous-delivery.jpg)
+
+## Practical Microservices
+Avoid the common pitfalls of microservices!
+
+[Doing microservices right](http://www.slideshare.net/spnewman/practical-microservices-yow-2013)
 
 # Conclusions
 
