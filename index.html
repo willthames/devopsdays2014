@@ -52,36 +52,33 @@
 <li class="fragment">Mean Time to Recovery (MTTR) — more of this</li>
 <li class="fragment">With some emphasis on software delivery</li>
 </ul>
-<aside class="notes">
-<ul>
-<li><s>Distributed Systems Architecture</s></li>
-<li>Design and Development</li>
-<li><s>Operations</s></li>
-</ul>
+<div class="aside">
 Getting individual applications right within a complex distributed system so that applications are operable
-</aside>
+</div>
 </section><section id="setting-the-scene" class="slide level2">
 <h1>Setting the scene</h1>
 <ul>
 <li>2+ years at Suncorp (2012–)</li>
 <li>~8 years at Betfair (2003–2011)</li>
 </ul>
-<aside class="notes">
-<h2>A little about Betfair</h2>
+</section><section id="a-little-about-betfair" class="slide level2">
+<h1>A little about Betfair</h1>
 <ul>
+<li>Betting exchange — the complicated bit is matching gamblers on both sides of the bet.</li>
 <li>I left in 2011. Much will have changed.</li>
 <li>150+ applications, not that many of which ‘looked’ the same</li>
 <li>1000s of transactions per second, all of which were supposed to complete in less than a second</li>
 <li>1000s of servers across multiple DCs</li>
 </ul>
-Genuinely 24x7, highly transactional environment with low tolerance for downtime.
-</aside>
+<p>Genuinely 24x7, highly transactional environment with low tolerance for downtime.</p>
 </section><section id="a-terrible-weekend" class="slide level2">
 <h1>A terrible weekend</h1>
 <p>Microservices have to be carefully considered.</p>
 <p>A set of cascading failures across a suite of microservices contributed to doing 30+ hours of oncall in a single weekend.</p>
+<div class="fragment">
 <p>We came up with a checklist of operational requirements, dozens of which were failing on each service.</p>
 <p>This is a distillation of learnings from that time!</p>
+</div>
 </section><section id="and-suncorp" class="slide level2">
 <h1>And Suncorp</h1>
 <p>The applications I support are typically provided by third parties, and so making them more supportable is hard. But that’s what support tickets are for.</p>
@@ -102,7 +99,7 @@ Genuinely 24x7, highly transactional environment with low tolerance for downtime
 </ul>
 </section><section id="standards-1" class="slide level2">
 <h1>Standards</h1>
-<p>No support team should have to guess how software is setup. Have organisational standards that declare:</p>
+<p>No support team should have to guess how software is set up. Have organisational standards that declare:</p>
 <ul>
 <li class="fragment">How software is installed (chef, puppet, ansible, salt, cfengine — just pick one)</li>
 <li class="fragment">Where logs live</li>

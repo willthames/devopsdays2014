@@ -13,17 +13,12 @@
 * Further reading
 
 ## Scope
-
 > * Mean Time between Failures (MTBF) &mdash; not so much of this
 > * Mean Time to Recovery (MTTR) &mdash; more of this
 > * With some emphasis on software delivery
 
-<div class="notes">
 
-* <s>Distributed Systems Architecture</s>
-* Design and Development 
-* <s>Operations</s>
-
+<div class="aside">
 Getting individual applications right within a complex 
 distributed system so that applications are operable
 </div>
@@ -33,9 +28,10 @@ distributed system so that applications are operable
 * 2+ years at Suncorp (2012&ndash;)
 * ~8 years at Betfair (2003&ndash;2011)
 
-<div class="notes">
 ## A little about Betfair
 
+* Betting exchange &mdash; the complicated bit is matching
+  gamblers on both sides of the bet.
 * I left in 2011. Much will have changed.
 * 150+ applications, not that many of which &lsquo;looked&rsquo; the same
 * 1000s of transactions per second, all of which
@@ -44,7 +40,6 @@ distributed system so that applications are operable
 
 Genuinely 24x7, highly transactional environment
 with low tolerance for downtime.
-</div>
 
 ## A terrible weekend
 
@@ -53,6 +48,8 @@ Microservices have to be carefully considered.
 A set of cascading failures across a suite of
 microservices contributed to doing 30+ hours of oncall
 in a single weekend.
+
+. . .
 
 We came up with a checklist of operational 
 requirements, dozens of which were failing on each 
@@ -84,7 +81,7 @@ Or public education&hellip;
 
 ## Standards
 
-No support team should have to guess how software is setup.
+No support team should have to guess how software is set up.
 Have organisational standards that declare:
 
 > * How software is installed (chef, puppet, ansible, salt, cfengine &mdash; just pick one)
