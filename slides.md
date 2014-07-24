@@ -192,10 +192,8 @@ Continuous Delivery and have some great advice:
 
 ## Practical Microservices
 
-&ldquo;Doing microservices right&rdquo; talks about how to avoid some of 
-the common pitfalls of microservices
+In &ldquo;Doing microservices right&rdquo;, Sam Newman talks about 
+how to avoid some of the common pitfalls of microservices
 [http://www.slideshare.net/spnewman/practical-microservices-yow-2013](http://www.slideshare.net/spnewman/practical-microservices-yow-2013) 
 
 # Questions?
-
-# Slides are at [http://willthames.github.io/devopsdays2014](http://willthames.github.io/devopsdays2014)
