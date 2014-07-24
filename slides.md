@@ -180,7 +180,7 @@ in a way that works across releases
 # Further Reading
 
 ## Release It
-Michael Nygaard wrote the book on making software operable.
+Michael Nygard wrote the book on making software operable.
 ![](images/release-it.jpg)
 
 ## Continuous Delivery
