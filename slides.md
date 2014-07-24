@@ -4,25 +4,6 @@
 
 # Introduction
 
-## Overview
-
-* Discoverability
-* Configurability
-* Observability
-* Resiliency
-* Further reading
-
-## Scope
-> * Mean Time between Failures (MTBF) &mdash; not so much of this
-> * Mean Time to Recovery (MTTR) &mdash; more of this
-> * With some emphasis on software delivery
-
-
-<div class="aside">
-Getting individual applications right within a complex 
-distributed system so that applications are operable
-</div>
-
 ## Setting the scene
 
 * 2+ years at Suncorp (2012&ndash;)
@@ -65,6 +46,27 @@ But that&rsquo;s what support tickets are for.
 . . .
 
 Or public education&hellip;
+
+# Overview
+
+## Contents
+
+* Discoverability
+* Configurability
+* Observability
+* Resiliency
+* Further reading
+
+## Scope
+> * Mean Time between Failures (MTBF) &mdash; not so much of this
+> * Mean Time to Recovery (MTTR) &mdash; more of this
+> * With some emphasis on software delivery
+
+
+<div class="notes">
+Getting individual applications right within a complex 
+distributed system so that applications are operable
+</div>
 
 # Discoverability
 
