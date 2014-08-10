@@ -192,10 +192,12 @@ Continuous Delivery and have some great advice:
 
 ![](images/continuous-delivery.jpg)
 
-## Practical Microservices
+## Building Microservices
 
-In &ldquo;Doing microservices right&rdquo;, Sam Newman talks about 
-how to avoid some of the common pitfalls of microservices
-[http://www.slideshare.net/spnewman/practical-microservices-yow-2013](http://www.slideshare.net/spnewman/practical-microservices-yow-2013) 
+In [Doing microservices right](http://www.slideshare.net/spnewman/practical-microservices-yow-2013), 
+Sam Newman talks about how to avoid some of the common pitfalls of 
+microservices. Building Microservices is currently in Early Release.
+
+![](images/microservices.jpg)
 
 # Questions?
